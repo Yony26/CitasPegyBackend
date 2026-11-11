@@ -9,4 +9,3 @@ public interface Repositorio<T> {
     List<T> listar();
     void eliminar(int id);
 }
-tiene menú contextual
