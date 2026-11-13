@@ -2,13 +2,12 @@ package view;
 
 import domain.Administracion;
 import service.AdministracionService;
+import service.validations.FormTypeValidator;
 import java.util.List;
-import java.util.Scanner;
 
 public class AdministracionView {
 
     private final AdministracionService service;
-    private final Scanner scanner = new Scanner(System.in);
 
     public AdministracionView(AdministracionService service) {
         this.service = service;
@@ -23,8 +22,7 @@ public class AdministracionView {
             System.out.println("3. Buscar por id");
             System.out.println("4. Eliminar por id");
             System.out.println("0. Salir");
-            System.out.print("Opcion: ");
-            opcion = leerEntero();
+            opcion = FormTypeValidator.intValidator("Opción: ");
 
             switch (opcion) {
                 case 1: registrar(); break;
@@ -39,22 +37,14 @@ public class AdministracionView {
 
     private void registrar() {
         try {
-            System.out.print("Id: ");
-            int id = leerEntero();
-            System.out.print("Nombre: ");
-            String nombre = scanner.nextLine();
-            System.out.print("Apellido: ");
-            String apellido = scanner.nextLine();
-            System.out.print("Documento: ");
-            String documento = scanner.nextLine();
-            System.out.print("Correo: ");
-            String correo = scanner.nextLine();
-            System.out.print("Telefono: ");
-            String telefono = scanner.nextLine();
-            System.out.print("Cargo: ");
-            String cargo = scanner.nextLine();
-            System.out.print("Usuario: ");
-            String usuario = scanner.nextLine();
+            int id = FormTypeValidator.intValidator("Id: ");
+            String nombre = FormTypeValidator.stringValidator("Nombre: ");
+            String apellido = FormTypeValidator.stringValidator("Apellido: ");
+            String documento = FormTypeValidator.stringValidator("Documento: ");
+            String correo = FormTypeValidator.stringValidator("Correo: ");
+            String telefono = FormTypeValidator.stringValidator("Teléfono: ");
+            String cargo = FormTypeValidator.stringValidator("Cargo: ");
+            String usuario = FormTypeValidator.stringValidator("Usuario: ");
 
             service.registrar(new Administracion(id, nombre, apellido,
                     documento, correo, telefono, cargo, usuario));
@@ -74,8 +64,7 @@ public class AdministracionView {
     }
 
     private void buscar() {
-        System.out.print("Id a buscar: ");
-        int id = leerEntero();
+        int id = FormTypeValidator.intValidator("Id a buscar: ");
         service.buscarPorId(id).ifPresentOrElse(
                 System.out::println,
                 () -> System.out.println("No se encontro"));
@@ -83,19 +72,11 @@ public class AdministracionView {
 
     private void eliminar() {
         try {
-            System.out.print("Id a eliminar: ");
-            service.eliminar(leerEntero());
+            int id = FormTypeValidator.intValidator("Id a eliminar: ");
+            service.eliminar(id);
             System.out.println("Eliminado");
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
-        }
-    }
-
-    private int leerEntero() {
-        try {
-            return Integer.parseInt(scanner.nextLine().trim());
-        } catch (NumberFormatException e) {
-            return -1;
         }
     }
 }
