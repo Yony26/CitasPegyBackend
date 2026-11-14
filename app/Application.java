@@ -1,3 +1,4 @@
+import database.DatabaseInitializer;
 import repository.OrdenDelDiaRepositoryImpl;
 import service.AdministracionService;
 import service.OrdenDelDiaServiceImpl;
@@ -7,9 +8,20 @@ import service.validations.FormTypeValidator;
 import view.AdministracionView;
 import view.OrdenDelDiaView;
 
+import java.sql.SQLException;
+
 public class Application {
 
     public static void main(String[] args) {
+        try {
+            DatabaseInitializer.initialize();
+        } catch (SQLException e) {
+            System.err.println("No se pudo conectar o inicializar SQL Server: " + e.getMessage());
+            System.err.println("Revisa la instancia, la base de datos y la autenticación integrada.");
+            System.err.println("Consulta README.md para configurar la DLL de autenticación de Windows.");
+            return;
+        }
+
         OrdenDelDiaRepositoryPort ordenRepository = new OrdenDelDiaRepositoryImpl();
         OrdenDelDiaService ordenService = new OrdenDelDiaServiceImpl(ordenRepository);
 

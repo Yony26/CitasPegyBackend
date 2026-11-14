@@ -5,6 +5,8 @@ import domain.enums.EstadoCita;
 public class OrdenDelDia {
 
     private int agendaId;
+
+
     private String fecha;        // formato yyyy-MM-dd
     private String startTime;    // formato HH:mm
     private EstadoCita estado;
