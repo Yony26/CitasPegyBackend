@@ -1,36 +1,22 @@
 # CitasPegyBackend
 
-## SQL Server local
+La aplicación administra citas y administradores sin conexión a una base de datos.
+Los datos se guardan únicamente en memoria y se pierden al cerrar la aplicación;
+los datos que existan en SQL Server no se importan ni se modifican.
 
-La aplicación guarda las citas y los administradores en SQL Server mediante JDBC y
-autenticación integrada de Windows. Al iniciar, crea la base `Citapegy` si no existe
-y crea las tablas e índices necesarios. La cuenta de Windows que ejecuta la aplicación
-debe tener permiso para crear bases de datos la primera vez y acceso de lectura/escritura
-después.
+## Ejecutar
 
-La configuración predeterminada es:
-
-- Servidor: `LAPTOP-ON7D89Q9\SQLEXPRESS`
-- Base de datos: `Citapegy`
-
-Puedes cambiarla con las variables de entorno `CITASPEGY_DB_SERVER` y
-`CITASPEGY_DB_NAME`.
-
-### Requisito para autenticación de Windows
-
-Además de Java 11 o superior y Maven, descarga la versión 12.8.1 del Microsoft JDBC
-Driver para SQL Server y copia `mssql-jdbc_auth-12.8.1.x64.dll` (o la variante `x86`
-si tu JVM es de 32 bits) desde su carpeta `auth` a una carpeta incluida en `PATH`.
-La arquitectura de la DLL debe coincidir con la de Java.
-
-### Ejecutar
-
-Desde la raíz del proyecto:
+Se requiere Java 11 o superior. Desde la raíz del proyecto, en PowerShell:
 
 ```powershell
-mvn clean compile
-mvn exec:java
+New-Item -ItemType Directory -Force out | Out-Null
+javac -encoding UTF-8 -d out (Get-ChildItem app -Recurse -Filter *.java | ForEach-Object { $_.FullName })
+java -cp out Application
 ```
 
-La conexión cifra el tráfico y confía en el certificado del servidor local, adecuado
-para una instancia de desarrollo. Para producción, configura un certificado confiable.
+## Comprobar
+
+```powershell
+javac -encoding UTF-8 -cp out -d out (Get-ChildItem tests -Recurse -Filter *.java | ForEach-Object { $_.FullName })
+java -cp out RepositoriosEnMemoriaTest
+```
