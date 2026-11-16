@@ -25,7 +25,7 @@ public class OrdenDelDiaView {
         try {
             OrdenDelDia orden = service.crear(fecha, hora, clienteId, especialistaId, servicioId);
             System.out.println("Cita confirmada. Código: " + orden.getBookingCode());
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException | IllegalStateException e) {
             System.out.println(e.getMessage());
         }
     }

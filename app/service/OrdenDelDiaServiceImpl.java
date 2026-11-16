@@ -36,14 +36,8 @@ public class OrdenDelDiaServiceImpl implements OrdenDelDiaService {
         orden.setClienteId(clienteId);
         orden.setEspecialistaId(especialistaId);
         orden.setServicioId(servicioId);
-        orden.setEstado(EstadoCita.PENDIENTE);
-
-        OrdenDelDia guardada = repository.guardar(orden);
-
-        // Confirmación automática con código único
-        guardada.setBookingCode("CP-" + String.format("%04d", guardada.getAgendaId()));
-        guardada.setEstado(EstadoCita.CONFIRMADA);
-        return repository.actualizar(guardada);
+        orden.setEstado(EstadoCita.CONFIRMADA);
+        return repository.guardar(orden);
     }
 
     @Override

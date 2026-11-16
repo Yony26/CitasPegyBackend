@@ -3,6 +3,8 @@ package domain.enums;
 public enum EstadoCita {
     PENDIENTE("Pendiente"),
     CONFIRMADA("Confirmada"),
+    ATENDIDA("Atendida"),
+    NO_ASISTIO("No asistió"),
     CANCELADA("Cancelada");
 
     private final String value;
